@@ -1,0 +1,55 @@
+{
+  "name": "dog-v2",
+  "model": "policy.onnx",
+  "sha256": "911a0ef53585a138ecb63308061f9eb591076310809af21910380ed4d1e2f42e",
+  "checkpoint_sha256": "a352db94c20d743731feb872b80f3f106b6ae0db3b74acb02d8310b316e3a087",
+  "source_revision": "1a19fb45bda12a0f7e1f9593b8731ad6a3a0d9c9",
+  "default_clip": "ai4a_D1_ex03_KAN02_012_s20",
+  "clip_sha256": "001a26d9f1e8a19c536f2893a7867d43f94aeee2e5f32843d4b2d741764ea1b1",
+  "joint_names": [
+    "FL_hip_joint",
+    "FL_thigh_joint",
+    "FL_calf_joint",
+    "FR_hip_joint",
+    "FR_thigh_joint",
+    "FR_calf_joint",
+    "RL_hip_joint",
+    "RL_thigh_joint",
+    "RL_calf_joint",
+    "RR_hip_joint",
+    "RR_thigh_joint",
+    "RR_calf_joint"
+  ],
+  "home": [
+    0.0,
+    0.5292036533355713,
+    -1.481744408607483,
+    0.0,
+    0.5292036533355713,
+    -1.481744408607483,
+    0.0,
+    0.8292036652565002,
+    -1.5817443132400513,
+    0.0,
+    0.8707963228225708,
+    -1.6233370304107666
+  ],
+  "period_ns": 20000000,
+  "history_frames": 10,
+  "goal_frames": 10,
+  "action_scale": 0.25,
+  "input_shapes": {
+    "obs_history": [
+      1,
+      420
+    ],
+    "goal": [
+      1,
+      340
+    ]
+  },
+  "output_shape": [
+    1,
+    12
+  ]
+}

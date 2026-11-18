@@ -1,0 +1,62 @@
+{
+  "environment": {
+    "evaluation_date": "2026-11-18",
+    "training_revision": "1a19fb45bda12a0f7e1f9593b8731ad6a3a0d9c9",
+    "checkpoint_path": "logs/dog-v2/ckpt_latest.pt",
+    "checkpoint_sha256": "a352db94c20d743731feb872b80f3f106b6ae0db3b74acb02d8310b316e3a087",
+    "seed": 0,
+    "device": "CPU",
+    "torch_version": "2.14.1+cu130",
+    "mujoco_version": "3.16.0",
+    "warp_version": "1.18.0",
+    "parallel_environments": 48,
+    "holdout_duration_s": 38.15775462700003,
+    "other_groups_duration_s": 213.14198227699853
+  },
+  "group_summary": [
+    {
+      "group": "all",
+      "clip_count": 462,
+      "frames": 130416,
+      "steps": 130416,
+      "failed_clip_count": 0,
+      "mean_normalized_return": 0.8885945326850256,
+      "frame_weighted_normalized_return": 0.9002639008671093,
+      "step_weighted_mean_xy_drift_m": 0.07485087539572435,
+      "step_weighted_mean_yaw_drift_rad": 0.07934482364204964
+    },
+    {
+      "group": "holdout",
+      "clip_count": 62,
+      "frames": 13056,
+      "steps": 13056,
+      "failed_clip_count": 0,
+      "mean_normalized_return": 0.8619912363916646,
+      "frame_weighted_normalized_return": 0.8690210464684403,
+      "step_weighted_mean_xy_drift_m": 0.0788366659316143,
+      "step_weighted_mean_yaw_drift_rad": 0.08683700457799669
+    },
+    {
+      "group": "train",
+      "clip_count": 314,
+      "frames": 92198,
+      "steps": 92198,
+      "failed_clip_count": 0,
+      "mean_normalized_return": 0.917214491751397,
+      "frame_weighted_normalized_return": 0.9369366417071,
+      "step_weighted_mean_xy_drift_m": 0.03487485570334445,
+      "step_weighted_mean_yaw_drift_rad": 0.0622929370429925
+    },
+    {
+      "group": "hard",
+      "clip_count": 86,
+      "frames": 25162,
+      "steps": 25162,
+      "failed_clip_count": 0,
+      "mean_normalized_return": 0.8032775236541837,
+      "frame_weighted_normalized_return": 0.7820997385216503,
+      "step_weighted_mean_xy_drift_m": 0.2192619151525586,
+      "step_weighted_mean_yaw_drift_rad": 0.13793841422944916
+    }
+  ]
+}

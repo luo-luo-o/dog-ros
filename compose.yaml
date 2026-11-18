@@ -1,0 +1,71 @@
+services:
+  sim:
+    image: dog-ros:sim
+    build:
+      context: ./docker
+      target: sim
+    init: true
+    network_mode: host
+    entrypoint: ["/bin/bash", "/usr/local/bin/dog-ros-entrypoint", "--ensure-build"]
+    command: ["sleep", "infinity"]
+    environment:
+      ROS_DOMAIN_ID: "${ROS_DOMAIN_ID:-0}"
+      DISPLAY: "${DISPLAY:-}"
+      XAUTHORITY: /tmp/dog-ros.Xauthority
+      DOG_SIM_VIEWER: "${DOG_SIM_VIEWER:-true}"
+      LIBGL_ALWAYS_SOFTWARE: "1"
+    healthcheck:
+      test: ["CMD", "test", "-s", "/tmp/dog-ros-build-ready"]
+      interval: 1s
+      timeout: 2s
+      retries: 10
+      start_period: 30s
+    volumes:
+      - .:/workspace
+      - ./docker/entrypoint.sh:/usr/local/bin/dog-ros-entrypoint:ro
+      - sim_colcon:/opt/dog
+      - type: bind
+        source: "${DOG_X11_SOCKET_DIR:-/tmp/.X11-unix}"
+        target: /tmp/.X11-unix
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: "${DOG_XAUTHORITY:-/dev/null}"
+        target: /tmp/dog-ros.Xauthority
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: "${DOG_REFERENCE_MOTIONS:-./motions/dog}"
+        target: /reference_motions
+        read_only: true
+        bind:
+          create_host_path: false
+
+  hardware:
+    image: dog-ros:hardware
+    build:
+      context: ./docker
+      target: hardware
+    init: true
+    network_mode: host
+    entrypoint: ["/bin/bash", "/usr/local/bin/dog-ros-entrypoint", "--ensure-build"]
+    command: ["sleep", "infinity"]
+    environment:
+      ROS_DOMAIN_ID: "${ROS_DOMAIN_ID:-0}"
+    volumes:
+      - ./docker/entrypoint.sh:/usr/local/bin/dog-ros-entrypoint:ro
+      - ./src/dog_controller/dog_controller:/workspace/src/dog_controller/dog_controller:ro
+      - ./src/dog_controller/resource:/workspace/src/dog_controller/resource:ro
+      - ./src/dog_controller/package.xml:/workspace/src/dog_controller/package.xml:ro
+      - ./src/dog_controller/setup.cfg:/workspace/src/dog_controller/setup.cfg:ro
+      - ./src/dog_controller/setup.py:/workspace/src/dog_controller/setup.py:ro
+      - ./src/dog_policy:/workspace/src/dog_policy:ro
+      - ./src/dog_hardware:/workspace/src/dog_hardware:ro
+      - ./policies/deploy:/workspace/policies/deploy:ro
+      - hardware_colcon:/opt/dog
+
+volumes:
+  sim_colcon:
+  hardware_colcon:
