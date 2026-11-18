@@ -1,0 +1,44 @@
+{
+  "mujoco": "3.3.7",
+  "onnx_sha256": "911a0ef53585a138ecb63308061f9eb591076310809af21910380ed4d1e2f42e",
+  "mjcf_sha256": "925ff6cd6e7a75cb45fd369c45f970ef687056976c13fe598303b1a68e4bb1ed",
+  "yaw_deadband_rad_s": 0.05,
+  "heading_gain": 1.8,
+  "trials": [
+    {
+      "start_phase": null,
+      "steps": 500,
+      "forward_m": 1.1790335810739005,
+      "left_m": -0.022204492725276793,
+      "left_yaw_deg": -0.3118545482621523
+    },
+    {
+      "start_phase": 0.0,
+      "steps": 500,
+      "forward_m": 1.208013424187469,
+      "left_m": 0.02135164624088433,
+      "left_yaw_deg": -0.15039050962119052
+    },
+    {
+      "start_phase": 0.25,
+      "steps": 500,
+      "forward_m": 1.1844471580511093,
+      "left_m": 0.030957451965718502,
+      "left_yaw_deg": -0.8879715664070464
+    },
+    {
+      "start_phase": 0.5,
+      "steps": 500,
+      "forward_m": 1.1682455108682575,
+      "left_m": -0.025281400186623306,
+      "left_yaw_deg": -1.4305488428831494
+    },
+    {
+      "start_phase": 0.75,
+      "steps": 500,
+      "forward_m": 1.1894468523749944,
+      "left_m": -0.01242438278730176,
+      "left_yaw_deg": -0.12712516191284823
+    }
+  ]
+}
