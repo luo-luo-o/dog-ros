@@ -2,13 +2,13 @@
 
 ## 仿真
 
-在 Linux 桌面终端进入工作空间，执行下面的命令。宿主机需要 X11 或 XWayland、`xauth` 和 Docker Compose。
+在 Linux 桌面或 Windows 的 WSL2 发行版终端进入工作空间，执行下面的命令。Linux 桌面需要 X11 或 XWayland、`xauth` 和 Docker Compose。Windows 环境见下方说明。
 
 ```bash
 ./docker/sim.sh
 ```
 
-脚本配置 X11 认证并复用已有容器。只有首次缺少容器时才创建，镜像也只在本地缺失时构建。打开窗口后，`dog-v2` 策略自动循环播放约 2 秒的默认转向步。每轮结束短暂停留，再回到首帧。点击窗口后按 **空格**暂停，再按空格从首帧重播。回到终端按 Ctrl+C 可退出仿真节点，开发容器继续运行。
+脚本为当前桌面配置 X11 并复用已有容器，镜像只在本地缺失时构建。打开窗口后，`dog-v2` 策略自动循环播放约 2 秒的默认转向步。每轮结束短暂停留，再回到首帧。点击窗口后按 **空格**暂停，再按空格从首帧重播。回到终端按 Ctrl+C 可退出仿真节点，开发容器继续运行。
 
 需要交互式 Bash 时运行 `./docker/sim.sh bash`。修改源码后，用 `./docker/sim.sh --build bash` 在同一容器内更新 ROS 安装产物。从 Bash 手动启动仿真可用下面的命令。
 
@@ -19,7 +19,20 @@ ros2 run dog_sim simulate --ros-args -p viewer:=false
 
 要开窗后等待手动播放，在启动命令末尾加 `--ros-args -p preview:=false`。ROS 的 `/dog_sim/play` 服务执行单次播放。
 
-没有桌面会话时，用 `DOG_SIM_VIEWER=false ./docker/sim.sh bash` 进入无窗口环境。ROS 服务与话题见 [架构说明](docs/architecture.md)。
+没有桌面会话时，用 `DOG_SIM_VIEWER=false ./docker/sim.sh bash` 进入无窗口环境，或用 `DOG_SIM_VIEWER=false ./docker/sim.sh` 直接启动无窗口节点。ROS 服务与话题见 [架构说明](docs/architecture.md)。
+
+### Windows 上的 WSL2 和 WSLg
+
+在 PowerShell 中用 `wsl.exe --list --verbose` 确认发行版运行在 WSL2。图形模式使用 WSL 自带的 WSLg，可用 `wsl.exe --update` 更新。Docker 可以使用发行版内的 Docker Engine 和 Compose 插件，也可以使用开启了该发行版 WSL 集成的 Docker Desktop（WSL2 后端）。先在发行版中确认 `docker version` 和 `docker compose version` 可用。[WSLg 安装说明](https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps) · [Docker Desktop WSL2 设置](https://docs.docker.com/desktop/features/wsl/)
+
+以 `E:\codes-GitHub\dog-ros` 为例，从 WSL2 的 Bash 启动仿真。
+
+```bash
+cd /mnt/e/codes-GitHub/dog-ros
+./docker/sim.sh
+```
+
+也可以在仓库目录下的 PowerShell 中运行 `wsl.exe -d Ubuntu -- ./docker/sim.sh`，将 `Ubuntu` 替换为实际发行版名称。脚本使用 WSLg 设置的 `DISPLAY` 和 `/mnt/wslg/.X11-unix` 的 X11 套接字，MuJoCo 用软件 OpenGL 渲染。已有容器缺少对应的套接字挂载时，Compose 会应用新挂载，ROS 构建产物仍保存在仿真命名卷中。[WSLg 容器显示说明](https://github.com/microsoft/wslg/blob/main/samples/container/Containers.md)
 
 ### 键盘遥控
 

@@ -94,6 +94,30 @@ docker compose run --rm -T sim python3 docs/experiment_data/benchmark_workspace.
   --policy-version dog-v2 --clip ai4a_D1_ex03_KAN02_012_s20
 ```
 
+### WSL2 与 WSLg 仿真验收
+
+2026-11-22 在 Windows 的 E 盘工作区使用 Ubuntu 24.04.5（WSL2）、WSLg 1.0.71、Docker Engine 29.8.2 和 Compose v5.6.0。MuJoCo 3.3.7 通过 WSLg 和软件 OpenGL 成功开窗。先无窗口启动再开窗时复用了同一容器。用占位目录模拟旧容器的 X11 挂载后，Compose 更新了挂载并保留构建卷。10 项单元测试和 ROS 冒烟测试通过。Docker Desktop 与原生 Linux 桌面待实机验证，Linux 的 X11 凭据转发路径已在 WSL2 中验证。
+
+```bash
+docker compose config --quiet
+docker compose build sim
+./docker/sim.sh timeout --preserve-status -s INT 8s ros2 run dog_sim simulate
+env -u DISPLAY DOG_SIM_VIEWER=false ./docker/sim.sh bash -ec \
+  'python3 -m unittest discover -s tests -v && python3 tests/ros_smoke.py'
+env -u DISPLAY DOG_SIM_VIEWER=false ./docker/sim.sh \
+  python3 docs/experiment_data/benchmark_workspace.py \
+  --policy-version dog-v2 --clip ai4a_D1_ex03_KAN02_012_s20
+```
+
+默认片段完成 100 / 100 帧，平均平面漂移 0.01569 米，关节均方根误差 0.05235 弧度。
+
+| 运行资产 | SHA-256 |
+| --- | --- |
+| `policy.onnx` | `911a0ef53585a138ecb63308061f9eb591076310809af21910380ed4d1e2f42e` |
+| `dog.xml` | `925ff6cd6e7a75cb45fd369c45f970ef687056976c13fe598303b1a68e4bb1ed` |
+| `dog.urdf` | `ef7b0e3c3c6500ffe3bc3707caf3122a9068dd0e879f24dbb0090d4c9f2fbd9f` |
+| `ai4a_D1_ex03_KAN02_012_s20.npz` | `001a26d9f1e8a19c536f2893a7867d43f94aeee2e5f32843d4b2d741764ea1b1` |
+
 ## 默认片段的显示复核
 
 默认参考片段的躯干在 100 帧内移动约 0.097 米，偏航变化约 55°。这是一段短转向步，循环时会回到起始位置和姿态。窗口加入了棋盘地面、灯光和可见的足底接触球，每轮结束停留 0.6 秒。复测默认片段时，100 帧及所有跟踪指标和 [容器历史结果](experiment_data/compose_benchmark.json) 一致。
